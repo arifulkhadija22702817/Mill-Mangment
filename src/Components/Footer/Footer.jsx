@@ -7,7 +7,7 @@ class Footer extends Component {
             <footer className="footer sm:footer-horizontal bg-base-300 text-base-content p-10 flex justify-around">
                 <nav>
                     <h1 className='text-green-400 text-2xl'>Developed by</h1>
-                    <span className='my-4 text-xl bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent'><NavLink to='https://www.facebook.com/share/1BQVg8B6Xk/'>Ariful Islam</NavLink></span>
+                    <span className='my-4 text-xl bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent hover:text-green-400'><NavLink to='https://www.facebook.com/share/1BQVg8B6Xk/'>Ariful Islam</NavLink></span>
                 </nav>
 
                 <nav className="flex flex-col items-center text-center">

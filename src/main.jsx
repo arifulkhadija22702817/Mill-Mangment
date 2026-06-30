@@ -14,6 +14,8 @@ import MillRate from './section/millRate/MillRate';
 import PresentMill from './section/PresentMill/PresentMill';
 import BigMarket from './section/BigMarket/BigMarket';
 import DailyMarket from './section/DailyMarket/DailyMarket';
+import Login from './Components/Login/Login';
+import Register from './Components/Register/Register';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: "/daily-market",
         element: <DailyMarket></DailyMarket>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
       }
     ]
   },

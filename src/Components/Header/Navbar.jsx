@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 class Navbar extends Component {
     render() {
+        
         const Links = [
             { name: "Home", path: "/" },
             { name: "Mill Rate", path: "/mill-rate" },
@@ -28,10 +29,12 @@ class Navbar extends Component {
                                             `px-3 py-1
                                          rounded-md
                                          border-2 border-green-400
-                                         mt-0.5  
+                                         mt-0.5 
+                                         text-[#01ff2b] 
+                                         
                                          transition-all duration-300 ${isActive
                                                 ? "bg-gradient-to-r from-green-500 to-green-800 text-white"
-                                                : "hover:bg-white/30"
+                                                : "hover:bg-[#380747]"
                                             }`
                                         }
                                     >
@@ -55,10 +58,11 @@ class Navbar extends Component {
                                     className={({ isActive }) =>
                                         `px-3 py-1 rounded-md transition-all
                                     ml-2
+                                    text-[#01ff2b]
                                     border-2 border-green-400  duration-300
      ${isActive
                                             ? "bg-gradient-to-r from-green-500 to-green-800 text-white"
-                                            : "hover:bg-white/30"
+                                            : "hover:bg-[#380747]"
                                         }`
                                     }
                                 >
@@ -68,8 +72,9 @@ class Navbar extends Component {
                         ))}
                     </ul>
                 </div>
-                <div className="navbar-end mr-3">
-                    <a className="btn bg-green-500 text-white transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Login</a>
+                <div className="navbar-end mr-3 gap-5">
+                    <NavLink to={"/Login"} className="bg-green-500 rounded-md px-4 py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Login</NavLink>
+                    <NavLink to={"/Register"} className="bg-red-300 rounded-md px-4 py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Registration</NavLink>
                 </div>
             </div>
         );
