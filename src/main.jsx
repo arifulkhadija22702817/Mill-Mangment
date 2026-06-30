@@ -16,6 +16,7 @@ import BigMarket from './section/BigMarket/BigMarket';
 import DailyMarket from './section/DailyMarket/DailyMarket';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
+import ForgotPassword from './Components/Forgot/Forgot';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword></ForgotPassword>,
       }
     ]
   },

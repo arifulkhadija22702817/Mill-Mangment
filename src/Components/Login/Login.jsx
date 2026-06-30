@@ -4,6 +4,7 @@ import {
     signOut,
     sendEmailVerification,
     onAuthStateChanged,
+    sendPasswordResetEmail,
 } from "firebase/auth";
 import { Link, NavLink } from "react-router-dom";
 import { auth } from "../Firebase/Firebase";
@@ -17,6 +18,7 @@ class Login extends Component {
         unverifiedUser: null,
         isLoading: false,
         isVerifying: false, // ভেরিফিকেশন চেক করার জন্য
+        email: "",
     };
 
     componentDidMount() {
@@ -25,7 +27,7 @@ class Login extends Component {
             if (user) {
                 // ইউজার লগইন থাকলে
                 await user.reload();
-                
+
                 if (user.emailVerified) {
                     // ইমেইল ভেরিফাইড হলে অটো লগইন
                     this.setState({
@@ -99,10 +101,10 @@ class Login extends Component {
                 // প্রতি 3 সেকেন্ড পর পর ইমেইল ভেরিফাইড কিনা চেক করবে
                 this.verificationInterval = setInterval(async () => {
                     await result.user.reload();
-                    
+
                     if (result.user.emailVerified) {
                         clearInterval(this.verificationInterval);
-                        
+
                         this.setState({
                             success: "Email verified! Logging in...",
                             isVerifying: false,
@@ -163,6 +165,7 @@ class Login extends Component {
             this.clearMessages();
         }
     };
+         
 
     handleResendVerification = async () => {
         const { unverifiedUser } = this.state;
@@ -195,10 +198,10 @@ class Login extends Component {
 
             this.verificationInterval = setInterval(async () => {
                 await unverifiedUser.reload();
-                
+
                 if (unverifiedUser.emailVerified) {
                     clearInterval(this.verificationInterval);
-                    
+
                     this.setState({
                         success: "Email verified! Logging in...",
                         isVerifying: false,
@@ -263,6 +266,8 @@ class Login extends Component {
                                         placeholder="Enter your email"
                                         className="input border border-purple-800 focus:border-purple-400 outline-none text-green-400"
                                         disabled={isLoading || isVerifying}
+                                        value={this.state.email}
+                                        onChange={(e) => this.setState({ email: e.target.value })}
                                     />
 
                                     <label className="text-purple-400 text-3xl mt-3">
@@ -309,13 +314,13 @@ class Login extends Component {
                                         </NavLink>
                                     </div>
 
-                                    <button 
+                                    <button
                                         className="btn btn-primary bg-purple-900 hover:bg-purple-500 hover:text-black"
                                         disabled={isLoading || isVerifying}
                                     >
-                                        {isLoading ? "Logging in..." : 
-                                         isVerifying ? "Waiting for verification..." : 
-                                         "Login"}
+                                        {isLoading ? "Logging in..." :
+                                            isVerifying ? "Waiting for verification..." :
+                                                "Login"}
                                     </button>
 
                                     <p className="mt-5 bg-gradient-to-r from-purple-400 to-purple-800 bg-clip-text text-transparent">
