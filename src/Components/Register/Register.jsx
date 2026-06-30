@@ -153,10 +153,17 @@ class Register extends Component {
                                                     showPassword: !this.state.showPassword,
                                                 })
                                             }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2"
+                                            className="absolute right-3 top-1/5 -translate-y-1/2"
                                         >
                                             {this.state.showPassword ? <FaEye /> : <FaEyeSlash />}
                                         </button>
+                                        
+                                            
+                                            <label className="flex gap-3 my-6">
+                                                <input type="checkbox" className="checkbox border-green-800 checked:border-green-400 accent-green-400" />
+                                                <p className="text-green-400">Accept out terms and conditions ?</p>
+                                            </label>
+                                        
                                     </div>
 
                                     <button className="btn btn-neutral bg-green-700 mt-5 hover:bg-green-400 hover:text-black">

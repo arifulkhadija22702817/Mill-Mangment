@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+.checkbox:checked {
+  color: #4ade80; /* green-400 */
+}
+
