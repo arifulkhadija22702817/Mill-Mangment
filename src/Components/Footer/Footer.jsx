@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 class Footer extends Component {
     render() {
         return (
-            <footer className="footer sm:footer-horizontal bg-base-300 text-base-content p-10 flex justify-around">
+            <footer className="footer sm:footer-horizontal bg-[#021606] text-base-content px-10 py-20 flex justify-around">
                 <nav>
                     <h1 className='text-green-400 text-2xl'>Developed by</h1>
                     <span className='my-4 text-xl bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent hover:text-green-400'><NavLink to='https://www.facebook.com/share/1BQVg8B6Xk/'>Ariful Islam</NavLink></span>

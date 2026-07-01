@@ -17,45 +17,100 @@ import DailyMarket from './section/DailyMarket/DailyMarket';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import ForgotPassword from './Components/Forgot/Forgot';
+import ProtectedRoute from './Components/PrivateRoute/PrivateRoute';
+import PublicRoute from './Components/Publick/PublicRout';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
     errorElement: <Error></Error>,
-    children:[
+    children: [
+
+      // protected route
+
+
       {
-        index: true,
-        element: <Home></Home>,
+        element: <ProtectedRoute></ProtectedRoute>,
+        children: [
+          {
+            index: true,
+            element: <Home></Home>
+          },
+          {
+            path: "/mill-rate",
+            element: <MillRate></MillRate>
+          },
+          {
+            path: "/present-mill",
+            element: <PresentMill></PresentMill>
+          },
+          {
+            path: "/big-market",
+            element: <BigMarket></BigMarket>
+          },
+          {
+            path: "/daily-market",
+            element: <DailyMarket></DailyMarket>
+          },
+        ]
       },
+
+
+
+      // public route
+
+
       {
-        path: "/mill-rate",
-        element: <MillRate></MillRate>,
-      },
-      {
-        path: "/present-mill",
-        element: <PresentMill></PresentMill>,
-      },
-      {
-        path: "/big-market",
-        element: <BigMarket></BigMarket>,
-      },
-      {
-        path: "/daily-market",
-        element: <DailyMarket></DailyMarket>,
-      },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/register",
-        element: <Register></Register>,
-      },
-      {
-        path: "/forgot-password",
-        element: <ForgotPassword></ForgotPassword>,
+        element: <PublicRoute></PublicRoute>,
+        children: [
+          {
+            path: "/login",
+            element: <Login></Login>
+          },
+          {
+            path: "/register",
+            element: <Register></Register>
+          },
+          {
+            path: "/forgot-password",
+            element: <ForgotPassword></ForgotPassword>
+          },
+        ]
       }
+
+      //   {
+      //     index: true,
+      //     element: <Home></Home>,
+      //   },
+      //   {
+      //     path: "/mill-rate",
+      //     element: <MillRate></MillRate>,
+      //   },
+      //   {
+      //     path: "/present-mill",
+      //     element: <PresentMill></PresentMill>,
+      //   },
+      //   {
+      //     path: "/big-market",
+      //     element: <BigMarket></BigMarket>,
+      //   },
+      //   {
+      //     path: "/daily-market",
+      //     element: <DailyMarket></DailyMarket>,
+      //   },
+      //   {
+      //     path: "/login",
+      //     element: <Login></Login>,
+      //   },
+      //   {
+      //     path: "/register",
+      //     element: <Register></Register>,
+      //   },
+      //   {
+      //     path: "/forgot-password",
+      //     element: <ForgotPassword></ForgotPassword>,
+      //   },
     ]
   },
 ]);

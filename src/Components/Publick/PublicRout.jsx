@@ -1,10 +1,10 @@
-// Components/ProtectedRoute.jsx
+// Components/PublicRoute.jsx
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth } from "../Firebase/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const ProtectedRoute = () => {
+const PublicRoute = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -25,11 +25,11 @@ const ProtectedRoute = () => {
         );
     }
 
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
+    // if (user) {
+    //     return <Navigate to="/" replace />;
+    // }
 
     return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default PublicRoute;

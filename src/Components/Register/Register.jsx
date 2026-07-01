@@ -3,7 +3,7 @@ import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
 } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { auth } from "../Firebase/Firebase";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -14,6 +14,8 @@ class Register extends Component {
         terms: "",
         Email: "",
         showPassword: false,
+        redirectToHome: false,
+        isLoading: false, // NEW: লোডিং স্টেট যোগ করুন
     };
 
     clearMessages = () => {
@@ -23,8 +25,9 @@ class Register extends Component {
                 success: "",
                 terms: "",
                 Email: "",
+                // ✅ redirectToHome রিসেট করবেন না
             });
-        }, 2000);
+        }, 3000); // 3 সেকেন্ড
     };
 
     handleRegister = async (event) => {
@@ -40,12 +43,15 @@ class Register extends Component {
             success: "",
             terms: "",
             Email: "",
+            redirectToHome: false,
+            isLoading: true, // লোডিং শুরু
         });
 
         // Password Validation
         if (password.length < 6) {
             this.setState({
                 error: "Password must be at least 6 characters.",
+                isLoading: false,
             });
             this.clearMessages();
             return;
@@ -54,6 +60,7 @@ class Register extends Component {
         if (!/[A-Z]/.test(password)) {
             this.setState({
                 error: "Password must contain at least one uppercase letter.",
+                isLoading: false,
             });
             this.clearMessages();
             return;
@@ -62,6 +69,7 @@ class Register extends Component {
         if (!/[a-z]/.test(password)) {
             this.setState({
                 error: "Password must contain at least one lowercase letter.",
+                isLoading: false,
             });
             this.clearMessages();
             return;
@@ -70,6 +78,7 @@ class Register extends Component {
         if (!/[0-9]/.test(password)) {
             this.setState({
                 error: "Password must contain at least one number.",
+                isLoading: false,
             });
             this.clearMessages();
             return;
@@ -78,6 +87,7 @@ class Register extends Component {
         if (!terms) {
             this.setState({
                 terms: "Please accept the Terms and Conditions.",
+                isLoading: false,
             });
             this.clearMessages();
             return;
@@ -97,12 +107,21 @@ class Register extends Component {
             form.reset();
 
             this.setState({
-                success: "Registration successful!",
-                Email:
-                    "Verification email has been sent. Please check your inbox and verify your email before logging in.",
+                success: "Registration successful! 🎉",
+                Email: "Verification email has been sent. Please check your inbox and verify your email before logging in.",
+                isLoading: false,
+                redirectToHome: true, // ✅ রেজিস্টার成功后 true
             });
 
             this.clearMessages();
+
+            // ⏰ 3 সেকেন্ড পর Redirect হবে (clearMessages এর timeout এর সাথে মিলিয়ে)
+            setTimeout(() => {
+                this.setState({
+                    redirectToHome: true,
+                });
+            }, 3000);
+
         } catch (error) {
             let errorMessage = "";
 
@@ -125,6 +144,8 @@ class Register extends Component {
 
             this.setState({
                 error: errorMessage,
+                isLoading: false,
+                redirectToHome: false,
             });
 
             this.clearMessages();
@@ -132,16 +153,23 @@ class Register extends Component {
     };
 
     render() {
+        const { error, success, terms, Email, showPassword, redirectToHome, isLoading } = this.state;
+
+        // ✅ Redirect চেক
+        if (redirectToHome) {
+            return <Navigate to="/" replace />;
+        }
+
         return (
             <div className="hero bg-base-200 min-h-screen">
-                <div className="hero-content flex-col">
+                <div className="hero-content flex-col w-full max-w-4xl"> {/* ✅ Container width বাড়ানো */}
                     <div className="text-center">
                         <h1 className="text-5xl font-bold text-green-500">
                             Registration Now
                         </h1>
                     </div>
 
-                    <div className="card bg-base-100 w-full max-w-sm shadow-2xl mt-16">
+                    <div className="card bg-base-100 w-full shadow-2xl mt-16 max-w-2xl"> {/* ✅ Card width বাড়ানো */}
                         <div className="card-body">
                             <form onSubmit={this.handleRegister}>
                                 <fieldset className="fieldset relative">
@@ -154,8 +182,8 @@ class Register extends Component {
                                         name="email"
                                         required
                                         placeholder="Enter your email"
-                                        className="input border border-green-800 
-                                       text-lg focus:border-green-500 outline-none text-red-300"
+                                        className="input w-full border border-green-800 text-lg focus:border-green-500 outline-none text-red-300 p-4" // ✅ Full width
+                                        disabled={isLoading} // ✅ Loading এ disable
                                     />
 
                                     <label className="text-green-500 text-3xl mt-3">
@@ -164,29 +192,24 @@ class Register extends Component {
 
                                     <div className="relative">
                                         <input
-                                            type={
-                                                this.state.showPassword
-                                                    ? "text"
-                                                    : "password"
-                                            }
+                                            type={showPassword ? "text" : "password"}
                                             name="password"
                                             placeholder="Enter your password"
-                                            className="input w-full pr-12 border border-green-800 focus:border-green-500 
-                                           text-lg outline-none text-red-300"
+                                            className="input w-full pr-12 border border-green-800 focus:border-green-500 text-lg outline-none text-red-300 p-4" // ✅ Full width
+                                            disabled={isLoading} // ✅ Loading এ disable
                                         />
 
                                         <button
                                             type="button"
                                             onClick={() =>
                                                 this.setState({
-                                                    showPassword:
-                                                        !this.state
-                                                            .showPassword,
+                                                    showPassword: !showPassword,
                                                 })
                                             }
                                             className="absolute right-3 top-1/2 -translate-y-1/2 p-2 hover:bg-green-500 hover:text-white"
+                                            disabled={isLoading}
                                         >
-                                            {this.state.showPassword ? (
+                                            {showPassword ? (
                                                 <FaEye size={20} />
                                             ) : (
                                                 <FaEyeSlash size={20} />
@@ -199,14 +222,18 @@ class Register extends Component {
                                             type="checkbox"
                                             name="terms"
                                             className="checkbox border-green-800 checked:border-green-400 accent-green-400"
+                                            disabled={isLoading} // ✅ Loading এ disable
                                         />
                                         <p className="text-green-400 text-md">
                                             Accept our Terms and Conditions?
                                         </p>
                                     </label>
 
-                                    <button className="btn btn-neutral bg-green-700 mt-5 hover:bg-green-400 hover:text-black text-xl py-4">
-                                        Register
+                                    <button 
+                                        className="btn btn-neutral bg-green-700 mt-5 hover:bg-green-400 hover:text-black text-xl py-4"
+                                        disabled={isLoading} // ✅ Loading এ disable
+                                    >
+                                        {isLoading ? "Registering..." : "Register"} {/* ✅ Loading text */}
                                     </button>
 
                                     <p className="mt-6 bg-gradient-to-r from-green-400 to-green-800 bg-clip-text text-transparent text-lg">
@@ -214,6 +241,7 @@ class Register extends Component {
                                         <Link
                                             to="/login"
                                             className="text-blue-500 ml-2 hover:text-purple-400"
+                                            style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
                                         >
                                             Login
                                         </Link>
@@ -221,27 +249,27 @@ class Register extends Component {
                                 </fieldset>
                             </form>
 
-                            {this.state.error && (
-                                <p className="text-red-500 mt-3 text-center font-medium">
-                                    {this.state.error}
+                            {error && (
+                                <p className="text-red-500 mt-3 text-center font-medium text-lg">
+                                    {error}
                                 </p>
                             )}
 
-                            {this.state.success && (
-                                <p className="text-green-500 mt-3 text-center font-medium">
-                                    {this.state.success}
+                            {success && (
+                                <p className="text-green-500 mt-3 text-center font-medium text-lg">
+                                    {success}
                                 </p>
                             )}
 
-                            {this.state.terms && (
-                                <p className="text-red-500 mt-3 text-center font-medium">
-                                    {this.state.terms}
+                            {terms && (
+                                <p className="text-red-500 mt-3 text-center font-medium text-lg">
+                                    {terms}
                                 </p>
                             )}
 
-                            {this.state.Email && (
-                                <p className="text-blue-500 mt-3 text-center font-medium">
-                                    {this.state.Email}
+                            {Email && (
+                                <p className="text-blue-500 mt-3 text-center font-medium text-lg">
+                                    {Email}
                                 </p>
                             )}
                         </div>

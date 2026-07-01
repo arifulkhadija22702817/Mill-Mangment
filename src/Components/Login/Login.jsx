@@ -6,7 +6,7 @@ import {
     onAuthStateChanged,
     sendPasswordResetEmail,
 } from "firebase/auth";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, Navigate } from "react-router-dom"; // redirect সরিয়ে দিন, শুধু Navigate থাকলেই হবে
 import { auth } from "../Firebase/Firebase";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -19,12 +19,12 @@ class Login extends Component {
         isLoading: false,
         isVerifying: false,
         email: "",
-        isManualLogin: false, // ম্যানুয়াল লগইন ট্র্যাক করার জন্য
+        isManualLogin: false,
+        redirectToHome: false,
     };
 
     componentDidMount() {
         this.unsubscribe = onAuthStateChanged(auth, async (user) => {
-            // শুধুমাত্র ম্যানুয়াল লগইনের সময় auto-login করবে
             if (user && this.state.isManualLogin) {
                 await user.reload();
                 if (user.emailVerified) {
@@ -32,14 +32,18 @@ class Login extends Component {
                         success: "Email verified! Logging in...",
                         isVerifying: false,
                         isLoading: true,
+                        redirectToHome: true, // ✅ true রাখুন
                     });
 
+                    // ✅ এখানে redirectToHome রিসেট করবেন না
+                    // কারণ Navigate রেন্ডার হওয়ার জন্য true থাকতে হবে
                     setTimeout(() => {
                         this.setState({
                             success: "Login successful!",
                             isLoading: false,
                             unverifiedUser: null,
                             isManualLogin: false,
+                            // ✅ redirectToHome এখানে রিসেট করবেন না
                         });
                         this.clearMessages();
                     }, 1500);
@@ -77,7 +81,8 @@ class Login extends Component {
             error: "",
             success: "",
             isLoading: true,
-            isManualLogin: true, // ম্যানুয়াল লগইন মার্ক করা
+            isManualLogin: true,
+            redirectToHome: false,
         });
 
         try {
@@ -97,7 +102,8 @@ class Login extends Component {
                     unverifiedUser: result.user,
                     isLoading: false,
                     isVerifying: true,
-                    isManualLogin: false, // রিসেট করা
+                    isManualLogin: false,
+                    redirectToHome: false,
                 });
 
                 this.clearMessages();
@@ -113,14 +119,17 @@ class Login extends Component {
                             isVerifying: false,
                             isLoading: true,
                             isManualLogin: true,
+                            redirectToHome: true, // ✅ true রাখুন
                         });
 
+                        // ✅ এখানে redirectToHome রিসেট করবেন না
                         setTimeout(() => {
                             this.setState({
                                 success: "Login successful!",
                                 isLoading: false,
                                 unverifiedUser: null,
                                 isManualLogin: false,
+                                // redirectToHome true থাকবে
                             });
                             this.clearMessages();
                         }, 1500);
@@ -138,9 +147,11 @@ class Login extends Component {
                 isLoading: false,
                 isVerifying: false,
                 isManualLogin: false,
+                redirectToHome: true, // ✅ true রাখুন
             });
 
             this.clearMessages();
+
         } catch (error) {
             let errorMessage = "";
 
@@ -166,6 +177,7 @@ class Login extends Component {
                 isLoading: false,
                 isVerifying: false,
                 isManualLogin: false,
+                redirectToHome: false,
             });
 
             this.clearMessages();
@@ -211,14 +223,17 @@ class Login extends Component {
                         isVerifying: false,
                         isLoading: true,
                         isManualLogin: true,
+                        redirectToHome: true, // ✅ true রাখুন
                     });
 
+                    // ✅ এখানে redirectToHome রিসেট করবেন না
                     setTimeout(() => {
                         this.setState({
                             success: "Login successful!",
                             isLoading: false,
                             unverifiedUser: null,
                             isManualLogin: false,
+                            // redirectToHome true থাকবে
                         });
                         this.clearMessages();
                     }, 1500);
@@ -239,6 +254,7 @@ class Login extends Component {
             this.setState({
                 error: errorMessage,
                 isLoading: false,
+                redirectToHome: false,
             });
 
             this.clearMessages();
@@ -246,19 +262,24 @@ class Login extends Component {
     };
 
     render() {
-        const { error, success, showPassword, unverifiedUser, isLoading, isVerifying } = this.state;
+        const { error, success, showPassword, unverifiedUser, isLoading, isVerifying, redirectToHome } = this.state;
+
+        // ✅ রিডাইরেক্ট চেক - এটা ঠিক আছে
+        if (redirectToHome) {
+            return <Navigate to="/" replace />;
+        }
 
         return (
             <div className="hero bg-base-200 min-h-screen">
-                <div className="hero-content flex-col w-full max-w-4xl"> {/* container width বাড়ানো */}
+                <div className="hero-content flex-col w-full max-w-4xl">
                     <div className="text-center">
                         <h1 className="text-5xl font-bold text-purple-600">
                             Login Now!
                         </h1>
                     </div>
 
-                    <form onSubmit={this.handleLogin} className="w-full max-w-2xl"> {/* ফর্ম width বাড়ানো */}
-                        <div className="card bg-base-100 w-full shadow-2xl mt-16"> {/* max-w-sm সরিয়ে ফেলা */}
+                    <form onSubmit={this.handleLogin} className="w-full max-w-2xl">
+                        <div className="card bg-base-100 w-full shadow-2xl mt-16">
                             <div className="card-body">
                                 <fieldset className="fieldset">
                                     <label className="text-purple-400 text-3xl">
@@ -270,7 +291,7 @@ class Login extends Component {
                                         name="email"
                                         required
                                         placeholder="Enter your email"
-                                        className="input w-full border border-purple-800 focus:border-purple-400 outline-none text-green-400 text-lg p-4" // বড় ইনপুট
+                                        className="input w-full border border-purple-800 focus:border-purple-400 outline-none text-green-400 text-lg p-4"
                                         disabled={isLoading || isVerifying}
                                         value={this.state.email}
                                         onChange={(e) => this.setState({ email: e.target.value })}
@@ -286,7 +307,7 @@ class Login extends Component {
                                             name="password"
                                             required
                                             placeholder="Enter your password"
-                                            className="input w-full pr-12 border border-purple-800 focus:border-purple-400 outline-none text-green-400 text-lg p-4" // বড় ইনপুট
+                                            className="input w-full pr-12 border border-purple-800 focus:border-purple-400 outline-none text-green-400 text-lg p-4"
                                             disabled={isLoading || isVerifying}
                                         />
 
@@ -313,7 +334,7 @@ class Login extends Component {
                                     </div>
 
                                     <button
-                                        className="btn btn-primary bg-purple-900 hover:bg-purple-500 hover:text-black text-xl py-4" // বড় বাটন
+                                        className="btn btn-primary bg-purple-900 hover:bg-purple-500 hover:text-black text-xl py-4"
                                         disabled={isLoading || isVerifying}
                                     >
                                         {isLoading ? "Logging in..." :
@@ -335,7 +356,6 @@ class Login extends Component {
                         </div>
                     </form>
 
-                    {/* Error, Success এবং অন্যান্য এলিমেন্ট */}
                     {error && (
                         <p className="text-red-500 mt-3 text-center font-medium text-lg">
                             {error}

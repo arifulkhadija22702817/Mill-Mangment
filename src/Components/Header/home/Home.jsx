@@ -57,7 +57,7 @@ class Home extends Component {
 
                 id: 1,
                 title: "আমরা 2022-23 সেশন এর সবাই বন্ধু ।",
-                description: "শেষ বারের মতো এক ফ্রেমে সবাই",
+                description: "শেষ বারের মতো এক ফ্রেমে সবাই। আর এভাবে হয়তো  আমরা একসাথে আর কখনোই এক ফ্রেমে থাকতে পারব না। তাই এই মুহূর্তটিকে ধরে রাখার জন্য সবাইকে ধন্যবাদ।",
                 image: Img1,
                 reverse: false,
             },
@@ -65,7 +65,7 @@ class Home extends Component {
 
         return (
             <>
-                <div className="bg-[#122920] flex flex-col items-center text-center">
+                <div className="bg-[#12361f] flex flex-col items-center text-center max-w-7xl mx-auto p-8">
                     {heroes.map((hero) => (
                         <div key={hero.id} className="hero my-6 w-full">
                             <div
@@ -112,7 +112,7 @@ class Home extends Component {
                             onClick={this.closeImage}
                             className="absolute top-4 right-4 text-white text-4xl font-bold"
                         >
-                            ×
+                            
                         </button>
                     </div>
                 )}
