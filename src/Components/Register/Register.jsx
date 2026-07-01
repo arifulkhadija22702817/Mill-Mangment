@@ -154,7 +154,8 @@ class Register extends Component {
                                         name="email"
                                         required
                                         placeholder="Enter your email"
-                                        className="input border border-green-800 focus:border-green-500 outline-none text-red-300"
+                                        className="input border border-green-800 
+                                       text-lg focus:border-green-500 outline-none text-red-300"
                                     />
 
                                     <label className="text-green-500 text-3xl mt-3">
@@ -170,7 +171,8 @@ class Register extends Component {
                                             }
                                             name="password"
                                             placeholder="Enter your password"
-                                            className="input w-full pr-12 border border-green-800 focus:border-green-500 outline-none text-red-300"
+                                            className="input w-full pr-12 border border-green-800 focus:border-green-500 
+                                           text-lg outline-none text-red-300"
                                         />
 
                                         <button
@@ -182,12 +184,12 @@ class Register extends Component {
                                                             .showPassword,
                                                 })
                                             }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 border border-green-500 rounded-md p-2 hover:bg-green-500 hover:text-white"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 hover:bg-green-500 hover:text-white"
                                         >
                                             {this.state.showPassword ? (
-                                                <FaEye />
+                                                <FaEye size={20} />
                                             ) : (
-                                                <FaEyeSlash />
+                                                <FaEyeSlash size={20} />
                                             )}
                                         </button>
                                     </div>
@@ -198,12 +200,12 @@ class Register extends Component {
                                             name="terms"
                                             className="checkbox border-green-800 checked:border-green-400 accent-green-400"
                                         />
-                                        <p className="text-green-400">
+                                        <p className="text-green-400 text-md">
                                             Accept our Terms and Conditions?
                                         </p>
                                     </label>
 
-                                    <button className="btn btn-neutral bg-green-700 mt-5 hover:bg-green-400 hover:text-black">
+                                    <button className="btn btn-neutral bg-green-700 mt-5 hover:bg-green-400 hover:text-black text-xl py-4">
                                         Register
                                     </button>
 

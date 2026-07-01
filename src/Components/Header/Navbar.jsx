@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 class Navbar extends Component {
     render() {
-        
+
         const Links = [
             { name: "Home", path: "/" },
             { name: "Mill Rate", path: "/mill-rate" },
@@ -46,7 +46,7 @@ class Navbar extends Component {
                     </div>
 
                     <a className="text-md md:text-2xl lg:text-2xl font-bold bg-clip-text bg-green-400 text-transparent ml-2">
-                        Mill Manegment
+                        Mill-Manegment
                     </a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -72,9 +72,9 @@ class Navbar extends Component {
                         ))}
                     </ul>
                 </div>
-                <div className="navbar-end mr-3 gap-5">
-                    <NavLink to={"/Login"} className="bg-green-500 rounded-md px-4 py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Login</NavLink>
-                    <NavLink to={"/Register"} className="bg-red-300 rounded-md px-4 py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Registration</NavLink>
+                <div className="navbar-end md:mr-3 gap-2 md:gap-5">
+                    <NavLink to={"/Login"} className="bg-green-500 rounded-md px-2 md:px-4 md:py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Login</NavLink>
+                    <NavLink to={"/Register"} className="bg-red-300 rounded-md px-2 md:px-4 md:py-2 text-black transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110">Registration</NavLink>
                 </div>
             </div>
         );
